@@ -2,20 +2,21 @@ import React, {createContext, FC, useState} from 'react';
 import classNames from 'classnames';
 
 type MenuMode = 'horizontal' | 'vertical'
-type SelectCallBack = (selectIndex: number) => void
+
+type SelectCallback = (selectedIndex: number) => void
 
 export interface MenuProps {
   defaultIndex?: number;
   className?: string;
-  children: React.ReactNode;
   mode?: MenuMode;
   style?: React.CSSProperties;
-  onSelect?: SelectCallBack;
+  onSelect?: SelectCallback;
+  children?: React.ReactNode;
 }
 
-interface IMenuContext {
+export interface IMenuContext {
   index: number;
-  onSelect?: SelectCallBack;
+  onSelect?: SelectCallback;
 }
 
 export const MenuContext = createContext<IMenuContext>({
@@ -23,28 +24,25 @@ export const MenuContext = createContext<IMenuContext>({
 });
 
 const Menu: FC<MenuProps> = (props) => {
-  const {className, mode, style, children, defaultIndex, onSelect} = props;
-  const [currentActive, setCurrentActive] = useState(defaultIndex);
-  const classes = classNames('wu-menu', className, {
-    'menu-vertical': mode === 'vertical'
+  const {defaultIndex, className, mode, style, onSelect, children} = props;
+  const [activeIndex, setActiveIndex] = useState(defaultIndex);
+  const classes = classNames('w-menu', className, {
+    'menu-vertical': mode === 'vertical',
+    'menu-horizontal': mode === 'horizontal'
   });
   const handleClick = (index: number) => {
-    setCurrentActive(index);
-    if (onSelect) {
-      onSelect(index);
-    }
+    setActiveIndex(index);
+    onSelect?.(index);
   };
   const passedContext: IMenuContext = {
-    index: currentActive ? currentActive : 0,
+    index: activeIndex ? activeIndex : 0,
     onSelect: handleClick
   };
-  return (
-    <ul className={classes} style={style}>
-      <MenuContext.Provider value={passedContext}>
-        {children}
-      </MenuContext.Provider>
-    </ul>
-  );
+  return <ul className={classes} style={style}>
+    <MenuContext.Provider value={passedContext}>
+      {children}
+    </MenuContext.Provider>
+  </ul>;
 };
 
 Menu.defaultProps = {

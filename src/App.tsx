@@ -6,7 +6,7 @@ import MenuItem from './components/menu/MenuItem';
 function App() {
   return (
     <div className="App">
-      <Menu defaultIndex={0} onSelect={(index) => alert(index)}>
+      <Menu defaultIndex={1} mode='vertical'>
         <MenuItem index={0}>
           cool link1
         </MenuItem>
@@ -17,7 +17,7 @@ function App() {
           cool link3
         </MenuItem>
       </Menu>
-      <Button autoFocus btnType={ButtonType.Link} href={'http://www.baidu.com'}>
+      <Button autoFocus disabled btnType={ButtonType.Link} href={'http://www.baidu.com'}>
         button
       </Button>
       <Button onClick={

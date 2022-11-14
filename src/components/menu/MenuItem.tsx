@@ -7,26 +7,24 @@ export interface MenuItemProps {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const MenuItem: FC<MenuItemProps> = (props) => {
-  const {index, disabled, children, className, style} = props;
-  const context = useContext(MenuContext);
-  const classes = classNames('wu-menu-item', className, {
+  const {index, disabled, className, style, children} = props;
+  const {index: activeIndex, onSelect} = useContext(MenuContext);
+  const classes = classNames('w-menu-item', className, {
     'is-disabled': disabled,
-    'is-active': context.index === index
+    'is-active': activeIndex === index
   });
   const handleClick = () => {
-    if (context.onSelect && !disabled) {
-      context.onSelect(index);
+    if (onSelect && !disabled) {
+      onSelect(index);
     }
   };
-  return (
-    <li className={classes} style={style} onClick={handleClick}>
-      {children}
-    </li>
-  );
+  return <li className={classes} style={style} onClick={handleClick}>
+    {children}
+  </li>;
 };
 
 export default MenuItem;
