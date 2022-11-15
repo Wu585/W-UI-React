@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import {MenuContext} from './Menu';
 
 export interface MenuItemProps {
-  index: number;
+  index?: number;
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -18,7 +18,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
     'is-active': activeIndex === index
   });
   const handleClick = () => {
-    if (onSelect && !disabled) {
+    if (onSelect && !disabled && (typeof index === 'number')) {
       onSelect(index);
     }
   };
@@ -26,5 +26,7 @@ const MenuItem: FC<MenuItemProps> = (props) => {
     {children}
   </li>;
 };
+
+MenuItem.displayName = 'MenuItem'
 
 export default MenuItem;

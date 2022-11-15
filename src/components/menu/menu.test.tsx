@@ -16,15 +16,18 @@ const testVerticalProps: MenuProps = {
 
 const generateMenu = (props: MenuProps) => {
   return <Menu {...props}>
-    <MenuItem index={0}>
+    <MenuItem>
       active
     </MenuItem>
-    <MenuItem index={1} disabled>
+    <MenuItem disabled>
       disabled
     </MenuItem>
-    <MenuItem index={2}>
+    <MenuItem>
       xyz
     </MenuItem>
+    <li>
+      li test
+    </li>
   </Menu>;
 };
 
@@ -44,25 +47,25 @@ describe('test Menu and MenuItem component', () => {
   });
   it('should render correct Menu and MenuItem base on default props', () => {
     expect(menuElement).toBeInTheDocument();
-    expect(menuElement).toHaveClass('w-menu test')
-    expect(menuElement.getElementsByTagName('li').length).toEqual(3)
-    expect(activeElement).toHaveClass('w-menu-item is-active')
-    expect(disabledElement).toHaveClass('w-menu-item is-disabled')
+    expect(menuElement).toHaveClass('w-menu test');
+    expect(menuElement.getElementsByTagName('li').length).toEqual(3);
+    expect(activeElement).toHaveClass('w-menu-item is-active');
+    expect(disabledElement).toHaveClass('w-menu-item is-disabled');
   });
   it('click items should change active and call the right callback', () => {
-    const thirdItem = screen.getByText('xyz')
-    fireEvent.click(thirdItem)
-    expect(thirdItem).toHaveClass('is-active')
-    expect(activeElement).not.toHaveClass('is-active')
-    expect(testProps.onSelect).toHaveBeenCalledWith(2)
-    fireEvent.click(disabledElement)
-    expect(disabledElement).not.toHaveClass('is-active')
-    expect(testProps.onSelect).not.toHaveBeenCalledWith(1)
-    expect(thirdItem).toHaveClass('is-active')
+    const thirdItem = screen.getByText('xyz');
+    fireEvent.click(thirdItem);
+    expect(thirdItem).toHaveClass('is-active');
+    expect(activeElement).not.toHaveClass('is-active');
+    expect(testProps.onSelect).toHaveBeenCalledWith(2);
+    fireEvent.click(disabledElement);
+    expect(disabledElement).not.toHaveClass('is-active');
+    expect(testProps.onSelect).not.toHaveBeenCalledWith(1);
+    expect(thirdItem).toHaveClass('is-active');
   });
   it('should render vertical mode when mode is set to vertical', () => {
-    cleanup()
-    render(generateMenu(testVerticalProps))
-    expect(screen.getByTestId('test-menu')).toHaveClass('menu-vertical')
+    cleanup();
+    render(generateMenu(testVerticalProps));
+    expect(screen.getByTestId('test-menu')).toHaveClass('menu-vertical');
   });
 });
